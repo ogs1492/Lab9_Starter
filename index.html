@@ -69,24 +69,32 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id='log'>Console Log</button>
+      <button id="error">Console Error</button>
+      <button id="count">Console Count</button>
+      <button id="warn">Console Warn</button>
+      <button id="assert">Console Assert</button>
+      <button id="clear">Console Clear</button>
+      <button id="dir">Console Dir</button>
+      <button id="dirxml">Console dirxml</button>
+      <button id="group-start">Console Group Start</button>
+      <button id="group-end">Console Group End</button>
+      <button id="table">Console Table</button>
+      <button id="start-timer">Start Timer</button>
+      <button id="end-timer">End Timer</button>
+      <button id="trace">Console Trace</button>
+      <button id="global-error">Trigger a Global Error</button>
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "35a5dddad86244c7aeb87e9b5c9c63ef"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                          
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -102,6 +110,120 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let logButton = document.getElementById('log')
+    logButton.addEventListener('click', () => {
+      console.log("Log button clicked")
+    })
+
+    let errorButton = document.getElementById('error')
+    errorButton.addEventListener('click', () => {
+      console.error("Error button clicked")
+    })
+
+    let countButton = document.getElementById('count')
+    countButton.addEventListener('click', () => {
+      console.count("count")
+    })
+
+    let warnButton = document.getElementById('warn')
+    warnButton.addEventListener('click', () => {
+      console.warn("Warning Button Clicked")
+    })
+
+    let assertButton = document.getElementById('assert')
+    assertButton.addEventListener('click', () => {
+      console.assert(1+1 == 2, "1+1=2")
+      console.assert(1+1 != 2, "1+1=2")
+    })
+
+    let clearButton = document.getElementById('clear')
+    clearButton.addEventListener('click', () => {
+      console.clear()
+    })
+
+    let dirButton = document.getElementById('dir')
+    dirButton.addEventListener('click', () => {
+      let obj = {prop : 10, prop2 : {text : "text"}}
+      console.dir(obj)
+    })
+
+    let dirXmlButton = document.getElementById('dirxml')
+    dirXmlButton.addEventListener('click', () => {
+      let obj = {prop : 10, prop2 : {text : "text"}}
+      console.dirxml(obj)
+    })
+
+    let groupStartButton = document.getElementById('group-start')
+    groupStartButton.addEventListener('click', () => {
+      console.group("Group")
+      console.log("In group")
+    })
+
+    let groupEndButton = document.getElementById('group-end')
+    groupEndButton.addEventListener('click', () => {
+      console.groupEnd("Group")
+      console.log("Not in group")
+    })
+
+    let startTimerButton = document.getElementById('start-timer')
+    startTimerButton.addEventListener('click', () => {
+      console.time("Timer")
+    })
+
+    let endTimerButton = document.getElementById('end-timer')
+    endTimerButton.addEventListener('click', () => {
+      console.timeEnd("Timer")
+    })
+
+    let traceButton = document.getElementById('trace')
+    function outer() {
+      inner()
+    }
+
+    function inner() {
+      console.trace()
+    }
+
+    traceButton.addEventListener('click', () => {
+      outer()
+    })
+
+    try {
+      let span = document.getElementsByTagName("span")[0]
+      let button = document.getElementById("log")
+      log.innerText = span.innerText
+    } catch (err) {
+      console.log(err)
+    } finally {
+      log.innerText = "Console Log"
+    }
+
+    class TextError extends Error {
+      constructor(message) {
+        super(message)
+        this.name = "TextError"
+      }
+    }
+
+    try {
+      let span = document.getElementsByTagName("span")[0]
+      let button = document.getElementById("log")
+      throw new TextError("Text Error")
+    } catch (err) {
+      console.log(err)
+      if (err instanceof TextError) {
+        console.log("Caught a TextError")
+      }   
+    }
+
+    let globalErrorButton = document.getElementById('global-error')
+    globalErrorButton.addEventListener('click', () => {
+      console.log(t)
+    })
+
+    window.onerror = () => {
+      console.log("Caught an error")
+    }
   </script>
 </body>
 
